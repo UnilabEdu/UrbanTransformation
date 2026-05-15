@@ -1,3 +1,4 @@
+from flask_babel import Babel
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -12,3 +13,4 @@ migrate = Migrate()
 login_manager = LoginManager()
 admin = Admin(name="UrbanTransformation Panel", index_view=SecureIndexView())
 api = Api(doc="/api/docs")
+babel = Babel()

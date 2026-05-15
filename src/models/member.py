@@ -9,3 +9,6 @@ class Member(db.Model):
     contribution = db.Column(db.Integer)
     image = db.Column(db.String)
     email = db.Column(db.String, unique=True)
+
+def __repr__(self):
+    return self.name, self.surname

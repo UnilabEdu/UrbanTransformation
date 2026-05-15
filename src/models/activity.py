@@ -7,4 +7,7 @@ class Activity(db.Model):
     title = db.Column(db.String)
     description = db.Column(db.String)
     DateTime = db.Column(db.String)
-    Time = db.Column(db.Integer)
+    Time = db.Column(db.Float)
+
+def __repr__(self):
+    return self.title
