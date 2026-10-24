@@ -28,12 +28,18 @@ slider_model = api.model('slider',{
     'img': fields.String
 })
 
+category_model = api.model('category', {
+    'id': fields.Integer,
+    'category_name': fields.String(attribute=get_translated('category_name')),
+})
+
 activities_model = api.model('activities',{
     'id': fields.Integer,
     'title': fields.String(attribute=get_translated('title')),
     'datetime': fields.DateTime,
     'img': fields.String,
     'description': fields.String(attribute=get_translated('description')),
+    'category': fields.String(attribute=get_translated('category'))
 })
 
 activity_model = api.model('activity', {
@@ -56,4 +62,64 @@ media_model = api.model('media',{
     'img': fields.String,
     'description': fields.String(attribute=get_translated('description')),
     'link': fields.String,
+})
+
+media_detail = api.model('media',{
+    'id': fields.Integer,
+    'title': fields.String(attribute=get_translated('title')),
+    'datetime': fields.DateTime,
+    'img': fields.String,
+    'description': fields.String(attribute=get_translated('description')),
+    'link': fields.String,
+    'recent': fields.List(fields.Nested(media_model)),
+})
+
+blog_model = api.model('blog',{
+    'id': fields.Integer,
+    'title': fields.String(attribute=get_translated('title')),
+    'datetime': fields.DateTime,
+    'img': fields.String,
+    'description': fields.String(attribute=get_translated('description')),
+    'link': fields.String,
+})
+
+blog_detail = api.model('blog-detail', {
+    'id': fields.Integer,
+    'title': fields.String(attribute=get_translated('title')),
+    'datetime': fields.DateTime,
+    'img': fields.String,
+    'description': fields.String(attribute=get_translated('description')),
+    'link': fields.String,
+    'recent': fields.List(fields.Nested(blog_model)),
+    }
+)
+
+about_us_model = api.model('about-us', {
+    'id': fields.Integer,
+    'title_img': fields.String,
+    'title_text': fields.String(attribute=get_translated('title_text')),
+    'about_the_laboratory_text': fields.String(attribute=get_translated('about_the_laboratory_text')),
+    'our_collection_text': fields.String(attribute=get_translated('our_collection_text')),
+    'mission_img': fields.String,
+    'our_mission_text': fields.String(attribute=get_translated('our_mission_text')),
+})
+
+results_model = api.model('results', {
+    'id': fields.Integer,
+    'title': fields.String(attribute=get_translated('title')),
+    'nav_title': fields.String(attribute=get_translated('nav_title')),
+})
+
+timeline_model = api.model('timeline', {
+    'id': fields.Integer,
+    'img': fields.String,
+    'year': fields.Integer(),
+    'description': fields.String(attribute=get_translated('description'))
+})
+
+result_detail_model = api.model('results-detail', {
+    'id': fields.Integer,
+    'title': fields.String(attribute=get_translated('title')),
+    'pdf': fields.String,
+    'timelines': fields.List(fields.Nested(timeline_model)),
 })

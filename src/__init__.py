@@ -1,10 +1,10 @@
 from flask import Flask, g, abort
-from src.ext import db, migrate, login_manager, admin, api, babel
+from src.ext import db, migrate, login_manager, admin, api, babel, cors
 from src.config import Config
 from src.commands import init_db, populate_db
-from src.models import Activity, ActivityTranslation, Member, User, Slider, Media
+from src.models import Activity, ActivityTranslation, ActivityCategory, CategoryTranslation, Member, User, Slider, Media, Blog
 from src.admin_views.base import SecureIndexView
-from src.endpoints import MemberList, ActivityList, ActivityDetail, SliderList, MediaList, MediaDetail
+from src.endpoints import MemberList, ActivityList, ActivityDetail, SliderList, MediaList, MediaDetail, BlogList, BlogDetail
 from src.views import auth_blueprint
 from src.admin_views import add_admin_views
 
@@ -24,9 +24,15 @@ def register_extensions(app):
     def load_user(id):
         return User.query.get(id)
 
-    admin.__init__(app, name="UrbanTransformation Panel", index_view=SecureIndexView())
+    admin.__init__(app, name="Urban Transformation", index_view=SecureIndexView())
     add_admin_views(admin, db)
 
+    cors.init_app(
+        app,
+        resources={r"/*": {"origins": "*"}},
+        allow_headers="*",
+        methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+    )
     api.init_app(app)
 
 

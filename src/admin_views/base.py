@@ -10,6 +10,9 @@ class SecureIndexView(AdminIndexView):
             return redirect(url_for("auth.login"))
         return super().index()
 
+    def is_visible(self):
+        return False
+
 class SecureModelView(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated
