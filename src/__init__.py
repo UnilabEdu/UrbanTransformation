@@ -24,7 +24,7 @@ def register_extensions(app):
     def load_user(id):
         return User.query.get(id)
 
-    admin.__init__(app, name="UrbanTransformation Panel", index_view=SecureIndexView())
+    admin.__init__(app, name="Urban Transformation", index_view=SecureIndexView())
     add_admin_views(admin, db)
 
     cors.init_app(
