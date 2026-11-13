@@ -8,8 +8,42 @@ import os
 
 from src.admin_views.base import SecureModelView
 from src.config import Config
-from src.models import ResultTranslation, TimelineTranslation, Timeline
+from src.models import ResultTranslation, TimelineTranslation, Timeline, TypologyTranslation
 
+
+class TypologyTranslationInline(InlineFormAdmin):
+    form_overrides = {
+        'lang': SelectField
+    }
+    form_args = {
+        'lang': {
+            'label': 'Language',
+            'choices': [(l, l) for l in Config.SUPPORTED_LANGS],
+        },
+    }
+
+class TypologyView(SecureModelView):
+
+    column_list = ['id', 'timeline', 'name', 'img']
+
+    form_overrides = {
+        "img": ImageUploadField,
+    }
+
+    form_args = {
+        "img": {
+            "base_path": lambda: current_app.config["UPLOAD_PATH"],
+            "relative_path": "images/",
+            "namegen": lambda obj, file: f"{uuid4().hex}{os.path.splitext(file.filename)[1]}"
+        },
+    }
+
+    column_formatters = {
+        'name': lambda v, c, m, n: m.translations[0].name if m.translations else '',
+        'img': lambda v, c, m, n: Markup(f'<img src="/static/{m.img}" width="100">'),
+    }
+
+    inline_models = [TypologyTranslationInline(TypologyTranslation),]
 
 class TimelineTranslationInline(InlineFormAdmin):
     form_overrides = {
@@ -18,7 +52,10 @@ class TimelineTranslationInline(InlineFormAdmin):
     form_args = {
         'lang': {
             'label': 'Language',
-            'choices': [(l, l) for l in Config.SUPPORTED_LANGS],  # choices, not options
+            'choices': [(l, l) for l in Config.SUPPORTED_LANGS],
+        },
+        'description': {
+            'description': 'რომ დავლინკოთ ტიპოლოგია გამოიყენეთ ეს ფორმატი [[ typology_id | text ]], მაგალითად [[ 1 | ტიპოლოგია ]]'
         }
     }
 
@@ -45,6 +82,8 @@ class TimelineView(SecureModelView):
         "img": ImageUploadField,
     }
 
+    form_excluded_columns = ['typologies']
+
     form_args = {
         "img": {
             "base_path": lambda: current_app.config["UPLOAD_PATH"],
@@ -64,7 +103,7 @@ class ResultTranslationInline(InlineFormAdmin):
     form_args = {
         'lang': {
             'label': 'Language',
-            'choices': [(l, l) for l in Config.SUPPORTED_LANGS],  # choices, not options
+            'choices': [(l, l) for l in Config.SUPPORTED_LANGS],
         }
     }
 
@@ -73,6 +112,7 @@ class ResultView(SecureModelView):
     column_formatters = {
         'name': lambda v,c,m,n: f'{m.translations[0].title}'
     }
+    form_excluded_columns = ['timelines']
 
     form_overrides = {
         'pdf': FileUploadField,
@@ -86,4 +126,5 @@ class ResultView(SecureModelView):
         }
     }
 
-    inline_models = [ResultTranslationInline(ResultTranslation),TimelineInline(Timeline),]
+    #inline_models = [ResultTranslationInline(ResultTranslation),TimelineInline(Timeline),]
+    inline_models = [ResultTranslationInline(ResultTranslation)]

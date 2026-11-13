@@ -110,11 +110,19 @@ results_model = api.model('results', {
     'nav_title': fields.String(attribute=get_translated('nav_title')),
 })
 
+typology_model = api.model('typology', {
+    'id': fields.Integer,
+    'img': fields.String,
+    'name': fields.String(attribute=get_translated('name')),
+    'description': fields.String(attribute=get_translated('description')),
+})
+
 timeline_model = api.model('timeline', {
     'id': fields.Integer,
     'img': fields.String,
     'year': fields.Integer(),
-    'description': fields.String(attribute=get_translated('description'))
+    'description': fields.String(attribute=get_translated('description')),
+    'typologies': fields.List(fields.Nested(typology_model)),
 })
 
 result_detail_model = api.model('results-detail', {
