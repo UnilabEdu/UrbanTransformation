@@ -46,6 +46,8 @@ class Timeline(BaseModel):
     year = db.Column(db.Integer())
 
     translations = db.relationship('TimelineTranslation', back_populates='timeline')
+    
+    typologies = db.relationship('Typology', back_populates='timeline')
 
     def __repr__ (self):
         return f'{self.year}, {[rt.title for rt in self.result.translations]}'
@@ -63,3 +65,28 @@ class TimelineTranslation(BaseModel):
     __table_args__ = (
         db.UniqueConstraint('timeline_id', 'lang', name='uq_timeline_lang'),
     )
+
+class Typology(BaseModel):
+    __tablename__ = 'typologies'
+
+    id = db.Column(db.Integer, primary_key=True)
+    timeline_id = db.Column(db.Integer(), db.ForeignKey('timelines.id'), nullable=False)
+    timeline = db.relationship('Timeline', back_populates='typologies')
+
+    img = db.Column(db.String())
+
+    translations = db.relationship('TypologyTranslation', back_populates='typology')
+
+    def __repr__(self):
+        return f'{[t.title for t in self.translations]}'
+
+class TypologyTranslation(BaseModel):
+    __tablename__ = 'typology_translations'
+
+    id = db.Column(db.Integer, primary_key=True)
+    typology_id = db.Column(db.Integer(), db.ForeignKey('typologies.id'), nullable=False)
+    typology = db.relationship('Typology', back_populates='translations')
+    lang = db.Column(db.String(5), nullable=False)
+
+    name = db.Column(db.String(), nullable=False)
+    description = db.Column(db.Text(), nullable=False)
