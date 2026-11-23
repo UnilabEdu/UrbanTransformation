@@ -7,7 +7,7 @@ class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     img = db.Column(db.String)
     email = db.Column(db.String, unique=True)
-    translations = db.relationship('MemberTranslation', back_populates='member')
+    translations = db.relationship('MemberTranslation', back_populates='member', cascade="all, delete-orphan",)
 
 class MemberTranslation(BaseModel):
     id = db.Column(db.Integer, primary_key=True)

@@ -45,9 +45,9 @@ class Timeline(BaseModel):
     img = db.Column(db.String())
     year = db.Column(db.Integer())
 
-    translations = db.relationship('TimelineTranslation', back_populates='timeline')
+    translations = db.relationship('TimelineTranslation', back_populates='timeline', cascade="all, delete-orphan",)
     
-    typologies = db.relationship('Typology', back_populates='timeline')
+    typologies = db.relationship('Typology', back_populates='timeline', cascade="all, delete-orphan",)
 
     def __repr__ (self):
         return f'{self.year}, {[rt.title for rt in self.result.translations]}'
@@ -75,7 +75,7 @@ class Typology(BaseModel):
 
     img = db.Column(db.String())
 
-    translations = db.relationship('TypologyTranslation', back_populates='typology')
+    translations = db.relationship('TypologyTranslation', back_populates='typology', cascade="all, delete-orphan",)
 
     def __repr__(self):
         return f'{[t.title for t in self.translations]}'

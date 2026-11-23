@@ -6,7 +6,7 @@ class Slider(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     img = db.Column(db.String, nullable = False)
-    translations = db.relationship('SliderTranslation', back_populates='slider')
+    translations = db.relationship('SliderTranslation', back_populates='slider', cascade="all, delete-orphan",)
     show = db.Column(db.Boolean, default = True)
 
 class SliderTranslation(BaseModel):

@@ -15,6 +15,7 @@ class Activity(BaseModel):
     translations = db.relationship(
         'ActivityTranslation',
         back_populates='activity',
+        cascade="all, delete-orphan",
     )
 
 class ActivityTranslation(BaseModel):
