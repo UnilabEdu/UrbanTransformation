@@ -13,7 +13,7 @@ class Blog(BaseModel):
     def recent(self):
         return Blog.query.filter(Blog.id != self.id).order_by(Blog.datetime.desc()).limit(5).all()
 
-    translations = db.relationship('BlogTranslation', back_populates='blog')
+    translations = db.relationship('BlogTranslation', back_populates='blog', cascade="all, delete-orphan",)
 
 class BlogTranslation(BaseModel):
     __tablename__ = 'blog_translations'

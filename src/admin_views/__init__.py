@@ -22,7 +22,7 @@ def add_admin_views(admin, db):
     admin.add_view(TimelineView(Timeline, db.session, category='Results'))
     admin.add_view(TypologyView(Typology, db.session, category='Results'))
     admin.add_view(MemberView(Member, db.session))
-    admin.add_view(AboutUsView(AboutUs, db.session))
+    #admin.add_view(AboutUsView(AboutUs, db.session))
 
     admin.add_link(MenuLink(name='Site', url='/', icon_type='fa', icon_value='fa-external-link'))
 

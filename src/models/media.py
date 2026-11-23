@@ -9,7 +9,7 @@ class Media(BaseModel):
     img = db.Column(db.String, nullable = False)
     link = db.Column(db.String, nullable = True)
 
-    translations = db.relationship('MediaTranslation', back_populates='media')
+    translations = db.relationship('MediaTranslation', back_populates='media', cascade="all, delete-orphan",)
 
     @property
     def recent(self):
